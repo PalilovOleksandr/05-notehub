@@ -4,13 +4,20 @@ import { type CreateNote, type Note } from '../types/note';
 const myKey = import.meta.env.VITE_NOTEHUB_TOKEN;
 axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
 
-export const fetchNotes = async () => {
-  const response = await axios.get('/notes', {
+interface NotesHttpResponse {
+  notes: Note[];
+  totalPages: number;
+}
+export const fetchNotes = async (page: number) => {
+  const response = await axios.get<NotesHttpResponse>('/notes', {
+    params: {
+      page,
+      perPage: '12',
+    },
     headers: {
       Authorization: `Bearer ${myKey}`,
     },
   });
-  console.log(response.data.notes);
   return response.data;
 };
 
@@ -19,7 +26,7 @@ export const createNote = async (noteData: CreateNote) => {
   return response.data;
 };
 
-export const deleteNote = async (noteId: string) => {
-  const response = await axios.delete(`/notes/${noteId}`);
+export const deleteNote = async (id: number) => {
+  const response = await axios.delete(`/notes/${id}`);
   return response.data;
 };

@@ -1,7 +1,7 @@
-type Tags = 'Work' | 'Personal' | 'Meeting' | 'Shopping' | 'Todo';
+export type Tags = 'Work' | 'Personal' | 'Meeting' | 'Shopping' | 'Todo';
 
 export interface Note {
-  id: string;
+  id: number;
   title: string;
   content: string;
   tag: Tags;
@@ -9,12 +9,12 @@ export interface Note {
 
 export interface CreateNote {
   title: string;
-  content?: string;
+  content: string;
   tag: Tags;
 }
 
 export interface UpdateNote {
-  id: string;
+  id: number;
   text?: string;
   content?: string;
   tag?: Tags;
