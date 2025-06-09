@@ -1,6 +1,6 @@
-import { Field, Form, Formik, ErrorMessage, type FormikHelpers } from "formik";
+import { Field, Form, Formik, ErrorMessage } from "formik";
 import css from "./NoteForm.module.css";
-import type { CreateNote, Tags } from "../../types/note";
+import type { Tags } from "../../types/note";
 import { createNote } from "../../services/noteService";
 import * as Yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ interface FormValues {
 const NoteSchema = Yup.object().shape({
     title: Yup.string().min(3, "Min. of 3 symbols").max(50, "Max. characters 50").required("Title is required"),
     content: Yup.string().max(500, "Max. characters 500"),
-    tag: Yup.string().oneOf(['Work', 'Personal', 'Meeting', 'Shopping', 'Todo'], "Invalid a note tag").required("Select a note tag")
+    tag: Yup.string().oneOf(['Work', 'Personal', 'Meeting', 'Shopping', 'Todo'], "Invalid tag value").required("Select a note tag")
 }
 );
 
@@ -29,15 +29,14 @@ const initialValues: FormValues = { title: "", content: "", tag: "Todo" };
 export default function NoteForm({ onClose }: NoteFormProps) {
     const queryClient = useQueryClient();
     const { mutate, isPending, isError } = useMutation({
-        mutationFn: (noteData: CreateNote) => createNote(noteData),
+        mutationFn: (noteData: FormValues) => createNote(noteData),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["notes"] });
             onClose();
         }
     })
-    const handleCreateTask = (values: FormValues, actions: FormikHelpers<FormValues>) => {
+    const handleCreateTask = (values: FormValues) => {
         mutate(values);
-        actions.resetForm();
     };
     return (
         <>
@@ -81,9 +80,9 @@ export default function NoteForm({ onClose }: NoteFormProps) {
                             <button
                                 type="submit"
                                 className={css.submitButton}
-                                disabled={false}
+                                disabled={isPending ? true : false}
                             >
-                                {isPending ? "Creates..." : "Create note"}
+                                Create note
                             </button>
                         </div>
                         {isError && <ErrorText />}

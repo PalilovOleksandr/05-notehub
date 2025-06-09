@@ -18,7 +18,7 @@ export const fetchNotes = async (
   const response = await axios.get<NotesHttpResponse>('/notes', {
     params: {
       page,
-      perPage: '12',
+      perPage: 12,
       ...(searchQuery && { search: searchQuery }),
     },
   });
@@ -31,6 +31,6 @@ export const createNote = async (noteData: CreateNote): Promise<Note> => {
 };
 
 export const deleteNote = async (noteId: number): Promise<Note> => {
-  const response = await axios.delete(`/notes/${noteId}`);
+  const response = await axios.delete<Note>(`/notes/${noteId}`);
   return response.data;
 };

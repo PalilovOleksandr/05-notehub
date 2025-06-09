@@ -12,10 +12,3 @@ export interface CreateNote {
   content: string;
   tag: Tags;
 }
-
-export interface UpdateNote {
-  id: number;
-  text?: string;
-  content?: string;
-  tag?: Tags;
-}
