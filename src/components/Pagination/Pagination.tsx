@@ -1,6 +1,6 @@
 import ReactPaginate from "react-paginate";
 import css from "./Pagination.module.css";
-import type React from "react";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 
 interface PaginationProps {
@@ -10,17 +10,20 @@ interface PaginationProps {
 }
 
 export default function Pagination({ totalPages, onChange, currentPage }: PaginationProps) {
-    return (totalPages > 1 &&
-        <ReactPaginate
-            pageCount={totalPages}
-            pageRangeDisplayed={5}
-            marginPagesDisplayed={1}
-            onPageChange={({ selected }) => onChange(selected + 1)}
-            forcePage={currentPage - 1}
-            containerClassName={css.pagination}
-            activeClassName={css.active}
-            nextLabel="→"
-            previousLabel="←"
-        />
+    return (
+        <>
+            <ReactPaginate
+                pageCount={totalPages}
+                pageRangeDisplayed={5}
+                marginPagesDisplayed={1}
+                onPageChange={({ selected }) => onChange(selected + 1)}
+                forcePage={currentPage - 1}
+                containerClassName={css.pagination}
+                activeClassName={css.active}
+                nextLabel="→"
+                previousLabel="←"
+            />
+            {totalPages <= 0 && <ErrorMessage text="Notes list is empty" />}
+        </>
     )
 }

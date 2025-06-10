@@ -46,7 +46,7 @@ export default function App() {
         <button className={css.button} onClick={() => setIsModalOpen(true)}>Create note +</button>
       </header>
       {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
-      {isError && <ErrorMessage />}
+      {isError && <ErrorMessage text="There was an error, please try again..." />}
       {isModalOpen && <NoteModal onClose={() => setIsModalOpen(false)} />}
       {isPending && <Loader />}
     </div>
