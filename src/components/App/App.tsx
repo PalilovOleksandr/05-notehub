@@ -35,7 +35,12 @@ export default function App() {
   function handlePageChange(page: number) {
     setCurrentPage(page);
   };
-
+  function openModal() {
+    setIsModalOpen(true);
+  }
+  function closeModal() {
+    setIsModalOpen(false);
+  }
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
@@ -43,11 +48,11 @@ export default function App() {
         {isSuccess && data.totalPages > 1 && (
           <Pagination totalPages={data.totalPages} currentPage={currentPage} onChange={handlePageChange} />
         )}
-        <button className={css.button} onClick={() => setIsModalOpen(true)}>Create note +</button>
+        <button className={css.button} onClick={openModal}>Create note +</button>
       </header>
       {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
       {isError && <ErrorMessage text="There was an error, please try again..." />}
-      {isModalOpen && <NoteModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && <NoteModal onClose={closeModal} />}
       {isPending && <Loader />}
     </div>
   )
